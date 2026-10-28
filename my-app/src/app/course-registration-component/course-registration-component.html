@@ -1,0 +1,99 @@
+<p>course-registration-component works!</p>
+<div class="container mt-4" style="max-width: 500px; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+  <h2 class="text-center mb-4">Course registration</h2>
+  <form #courseForm="ngForm" (ngSubmit)="onSubmit()">
+    <!-- Name: (required) -->
+    <div class="mb-3">
+      <label class="form-label">Name:</label>
+      <input type="text" class="form-control" name="fullName"
+        [(ngModel)]="courseModel.fullName"
+        #name="ngModel" required
+        [class.is-invalid]="name.invalid && name.touched"
+        placeholder="Enter name">
+      <!-- Error message for Name -->
+      <small class="text-danger" [class.d-none]="name.valid || name.untouched">
+        You have not entered a name
+      </small>
+    </div>
+
+    <!-- Email: Required + Email format -->
+    <div class="mb-3">
+      <label class="form-label">Email:</label>
+      <input type="email" class="form-control" name="email"
+        [(ngModel)]="courseModel.email"
+        #email="ngModel" required email
+        [class.is-invalid]="email.invalid && email.touched"
+        placeholder="Enter email">
+      <!-- Detailed error messages for Email using *ngIf -->
+      <div *ngIf="email.errors && (email.invalid || email.touched)">
+        <small class="text-danger" *ngIf="email.errors['required']"> You have not entered an email </small>
+        <small class="text-danger" *ngIf="email.errors['email']"> Invalid email </small>
+      </div>
+    </div>
+
+    <!-- Phone: Required + Only numbers allowed -->
+    <div class="mb-3">
+      <label class="form-label"> Phone :</label>
+      <input type="tel" class="form-control" name="phone"
+        [(ngModel)]="courseModel.phone"
+        #phone="ngModel" required pattern="[0-9]*"
+        [class.is-invalid]="phone.invalid && phone.touched">
+      <small class="text-danger" *ngIf="phone.invalid && phone.touched">
+        Invalid phone number (only numbers allowed)
+      </small>
+    </div>
+
+    <!-- Course Selection: Required field -->
+    <div class="mb-3">
+      <label class="form-label">Course selection:</label>
+      <select class="form-select" name="course"
+        [(ngModel)]="courseModel.course"
+        #course="ngModel" required
+        [class.is-invalid]="course.invalid && course.touched">
+        <option value="">-----------</option>
+        <option value="angular">Basic Angular</option>
+        <option value="nodejs">Advanced Node.js</option>
+        <option value="datascience">Data Science</option>
+      </select>
+      <small class="text-danger" *ngIf="course.invalid && course.touched">
+        Please select a course
+      </small>
+    </div>
+
+    <!-- Select a class shift -->
+    <div class="mb-3">
+      <label class="form-label me-3">Select a class:</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="select_class" id="morning" value="morning"
+          [(ngModel)]="courseModel.select_class">
+        <label class="form-check-label" for="morning"> Morning </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="select_class" id="afternoon" value="afternoon"
+          [(ngModel)]="courseModel.select_class">
+        <label class="form-check-label" for="afternoon"> Afternoon </label>
+      </div>
+    </div>
+
+    <!-- Terms Acceptance: Must be checked (required) -->
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" name="agree" id="checkTerms"
+        [(ngModel)]="courseModel.agree"
+        #agree="ngModel" required>
+      <label class="form-check-label" for="checkTerms"> Agree to terms </label>
+      <div class="text-danger" *ngIf="agree.invalid && agree.touched">
+        <small> You must agree to the terms to continue </small>
+      </div>
+    </div>
+
+    <!-- Submit Button: Only enabled when the ENTIRE Form is valid -->
+    <button type="submit" class="btn btn-primary w-25" [disabled]="courseForm.invalid">Submit</button>
+
+    <!-- Debug area to display data state for students to review (Optional) -->
+    <hr>
+    <div class="mt-3 p-2 bg-light border border-info rounded">
+      <small class="text-primary"><b> Current Object State :</b></small>
+      <pre class="mb-0" style="font-size: 11px;">{{ courseModel | json }}</pre>
+    </div>
+  </form>
+</div>

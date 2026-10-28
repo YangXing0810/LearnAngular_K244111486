@@ -1,0 +1,13 @@
+# Thư viện cài lại bằng npm install
+node_modules/
+# Build / cache Angular
+dist/
+.angular/
+out-tsc/
+coverage/
+# Rác hệ điều hành / editor
+.DS_Store
+Thumbs.db
+.vscode/
+_to_delete/
+*.log

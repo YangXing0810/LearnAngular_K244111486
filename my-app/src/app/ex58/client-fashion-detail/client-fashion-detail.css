@@ -1,0 +1,15 @@
+.article-page { max-width: 860px; margin: 24px auto 50px; padding: 0 16px; font-family: 'Segoe UI', Roboto, Arial, sans-serif; color: #222; }
+.back { text-decoration: none; color: #4b134f; font-weight: 600; }
+article { margin-top: 16px; }
+.style { display: inline-block; background: #4b134f; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 2px; padding: 5px 12px; border-radius: 4px; text-transform: uppercase; }
+h1 { font-size: 38px; font-weight: 800; line-height: 1.2; margin: 14px 0 10px; }
+.date { color: #888; margin-bottom: 20px; }
+.cover { width: 100%; max-height: 560px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.content { padding: 24px 0 0; font-size: 17px; line-height: 1.8; height: auto; }
+.content img { max-width: 100%; border-radius: 12px; }
+.related { margin-top: 40px; border-top: 2px solid #222; padding-top: 16px; }
+.related h4 { font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.rel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 12px; }
+.rel { text-decoration: none; color: #222; font-weight: 600; font-size: 14px; }
+.rel img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; margin-bottom: 6px; }
+@media (max-width: 700px) { .rel-grid { grid-template-columns: 1fr; } h1 { font-size: 28px; } }

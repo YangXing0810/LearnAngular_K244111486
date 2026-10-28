@@ -1,0 +1,66 @@
+<div class="form-page">
+  <nav class="crumb">
+    <a routerLink="/admin-fashion"><i class="bi bi-arrow-left"></i> Fashion list</a>
+    <span>/</span> {{ id() ? 'Edit Fashion' : 'Add a new Fashion' }}
+  </nav>
+
+  <div class="form-card">
+    <div class="form-head">
+      <h3>
+        @if (id()) { <i class="bi bi-pencil-square"></i> Edit Fashion }
+        @else { <i class="bi bi-plus-circle"></i> Add a new Fashion }
+      </h3>
+      @if (id()) {
+        <div class="meta">ID: <code>{{ id() }}</code> · Created: {{ createdDate() | date:'dd/MM/yyyy HH:mm' }}</div>
+      }
+    </div>
+
+    @if (errMessage()) {
+      <div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> {{ errMessage() }}</div>
+    }
+    @if (loading()) {
+      <div class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm"></div> Loading fashion...</div>
+    }
+
+    <div class="grid">
+      <!-- left: main fields -->
+      <div>
+        <label class="form-label">Fashion title <span class="req">*</span></label>
+        <input class="form-control form-control-lg" [class.is-invalid]="submitted() && !title().trim()"
+               placeholder="e.g. Street Style Photos From Paris" [(ngModel)]="title">
+
+        <label class="form-label mt-3">Style <span class="req">*</span></label>
+        <input class="form-control" list="styleOptions" [class.is-invalid]="submitted() && !style().trim()"
+               placeholder="Choose an existing style or type a new one" [(ngModel)]="style">
+        <datalist id="styleOptions">
+          @for (s of styles(); track s) { <option [value]="s"></option> }
+        </datalist>
+
+        <label class="form-label mt-3">Fashion detail <small class="text-muted">(WYSIWYG editor)</small></label>
+        <app-fashion-editor [value]="detail()" (valueChange)="detail.set($event)"></app-fashion-editor>
+      </div>
+
+      <!-- right: thumbnail -->
+      <div>
+        <label class="form-label">Thumbnail <span class="req">*</span></label>
+        <label class="thumb-box" [class.invalid]="submitted() && !image()">
+          @if (image()) {
+            <img [src]="image()" alt="thumbnail">
+            <span class="change"><i class="bi bi-camera"></i> Change image</span>
+          } @else {
+            <div class="empty"><i class="bi bi-image"></i><br>Click to choose an image</div>
+          }
+          <input type="file" accept="image/*" hidden (change)="onFileSelected($event)">
+        </label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/admin-fashion" class="btn btn-light px-4">Cancel</a>
+      <button class="btn btn-save px-4" (click)="save()" [disabled]="saving()">
+        @if (saving()) { <span class="spinner-border spinner-border-sm"></span> Saving... }
+        @else { <i class="bi bi-check2-circle"></i> Save }
+      </button>
+    </div>
+  </div>
+</div>

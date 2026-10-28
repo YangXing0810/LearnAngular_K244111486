@@ -1,0 +1,30 @@
+<div class="view-page">
+  <nav class="crumb">
+    <a routerLink="/admin-fashion"><i class="bi bi-arrow-left"></i> Fashion list</a>
+    <span>/</span> Fashion detail
+  </nav>
+  @if (errMessage()) {
+    <div class="alert alert-danger">{{ errMessage() }}</div>
+  }
+  @if (fashion(); as f) {
+    <div class="view-card">
+      <div class="top">
+        <img [src]="f.fashion_image" class="thumb" alt="thumbnail">
+        <div class="info">
+          <span class="badge style-badge">{{ f.style }}</span>
+          <h2>{{ f.fashion_subject }}</h2>
+          <table class="meta">
+            <tr><td>ID</td><td><code>{{ f._id }}</code></td></tr>
+            <tr><td>Created date</td><td>{{ f.created_date | date:'dd/MM/yyyy HH:mm' }}</td></tr>
+          </table>
+          <div class="d-flex gap-2 mt-3">
+            <a [routerLink]="['/admin-fashion/edit', f._id]" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit</a>
+            <a [routerLink]="['/client-fashion', f._id]" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-up-right"></i> View on client site</a>
+          </div>
+        </div>
+      </div>
+      <h5 class="section">Fashion detail</h5>
+      <div class="fashion-content detail" [innerHTML]="f.fashion_detail | safeHtml"></div>
+    </div>
+  }
+</div>

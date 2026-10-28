@@ -1,0 +1,98 @@
+.login-panel {
+	max-width: 400px;
+	margin: 32px auto;
+	padding: 28px;
+	border: 1px solid #d4d9d5;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.login-panel h2 {
+	margin: 0 0 24px;
+	color: #202820;
+	font-size: 24px;
+}
+
+.form-field {
+	display: grid;
+	gap: 7px;
+	margin-bottom: 18px;
+}
+
+.form-field label {
+	color: #303832;
+	font-weight: 600;
+}
+
+.form-field input {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 42px;
+	padding: 9px 11px;
+	border: 1px solid #aeb8b0;
+	border-radius: 5px;
+	font: inherit;
+}
+
+.form-field input:focus {
+	border-color: #198044;
+	outline: 2px solid #19804433;
+}
+
+.form-field input.invalid-input {
+	border-color: #b42318;
+}
+
+.field-error {
+	color: #b42318;
+}
+
+.remember-option {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	margin: 4px 0 20px;
+	color: #424b44;
+}
+
+.action-button {
+	width: 100%;
+	min-height: 44px;
+	border: 0;
+	border-radius: 5px;
+	color: #fff;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.action-button:focus-visible {
+	outline: 3px solid #202820;
+	outline-offset: 2px;
+}
+
+.action-button:disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+
+.login-button {
+	background: #16803c;
+}
+
+.login-button:hover:not(:disabled) {
+	background: #116a32;
+}
+
+.logout-button {
+	background: #c62828;
+}
+
+.logout-button:hover {
+	background: #a61f1f;
+}
+
+.login-status {
+	margin: 0 0 20px;
+	color: #245b35;
+}

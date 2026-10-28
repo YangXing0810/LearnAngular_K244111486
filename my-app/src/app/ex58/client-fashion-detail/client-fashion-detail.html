@@ -1,0 +1,28 @@
+<div class="article-page">
+  <a routerLink="/client-fashion" class="back"><i class="bi bi-arrow-left"></i> Back to fashions</a>
+  @if (errMessage()) { <div class="alert alert-danger">{{ errMessage() }}</div> }
+  @if (fashion(); as f) {
+    <article>
+      <div class="style">{{ f.style }}</div>
+      <h1>{{ f.fashion_subject }}</h1>
+      <div class="date"><i class="bi bi-calendar3"></i> {{ f.created_date | date:'EEEE, dd MMMM yyyy' }}</div>
+      <img [src]="f.fashion_image" class="cover" [alt]="f.fashion_subject">
+      <!-- content entered with the WYSIWYG editor -->
+      <div class="fashion-content content" [innerHTML]="f.fashion_detail | safeHtml"></div>
+    </article>
+
+    @if (related().length > 0) {
+      <section class="related">
+        <h4>More from {{ f.style }}</h4>
+        <div class="rel-grid">
+          @for (r of related(); track r._id) {
+            <a [routerLink]="['/client-fashion', r._id]" class="rel">
+              <img [src]="r.fashion_image" [alt]="r.fashion_subject">
+              <span>{{ r.fashion_subject }}</span>
+            </a>
+          }
+        </div>
+      </section>
+    }
+  }
+</div>

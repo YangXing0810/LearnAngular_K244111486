@@ -1,0 +1,48 @@
+<header class="search-header">
+  <h2>Search Products</h2>
+  <button type="button" class="logout-button" (click)="onLogout()">Logout</button>
+</header>
+{{errMessage()}}
+<label>Min Price:</label>
+<input type="number" [(ngModel)]="minPrice">
+<br/>
+<label>Max Price:</label>
+<input type="number" [(ngModel)]="maxPrice">
+<br/>
+<button (click)="onFilter()">Filter Product</button>
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Details</th>
+      <th>Slug</th>
+    </tr>
+  </thead>
+  <tbody>
+  @for (p of filteredProducts(); track p.id) {
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ p.name }}</td>
+      <td>{{ p.price }}</td>
+      <td>
+        <a (click)="viewDetail(p.id)"
+           style="cursor: pointer;"
+           title="click here to view detail" >View detail</a>
+      </td>
+      <td>
+        <a (click)="viewDetailSlug(p)"
+           style="cursor: pointer;"
+           title="click here to view detail" >
+           {{generateSlug(p.name,p.id)}}
+        </a>
+      </td>
+    </tr>
+  } @empty {
+    <tr>
+      <td colspan="3">No products available.</td>
+    </tr>
+  }
+</tbody>
+</table>

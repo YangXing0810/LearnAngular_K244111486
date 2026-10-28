@@ -1,0 +1,47 @@
+<section class="login-panel">
+  <h2>Login</h2>
+  @if (loginError) {
+    <p class="field-error" role="alert">{{ loginError }}</p>
+  }
+
+  @if (isLoggedIn) {
+    <p class="login-status" role="status">You are logged in.</p>
+    <button type="button" class="action-button logout-button" (click)="onLogout()">
+      Logout
+    </button>
+  } @else {
+    <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+      <div class="form-field">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" autocomplete="username"
+          [(ngModel)]="user.username" #username="ngModel" required minlength="4"
+          [class.invalid-input]="username.invalid && username.touched">
+        @if (username.touched && username.errors?.['required']) {
+          <small class="field-error">Please enter your username.</small>
+        }
+        @if (username.touched && username.errors?.['minlength']) {
+          <small class="field-error">Username must be at least 4 characters.</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" autocomplete="current-password"
+          [(ngModel)]="user.password" #password="ngModel" required
+          [class.invalid-input]="password.invalid && password.touched">
+        @if (password.touched && password.invalid) {
+          <small class="field-error">Please enter your password.</small>
+        }
+      </div>
+
+      <label class="remember-option" for="remember">
+        <input type="checkbox" name="rememberMe" id="remember" [(ngModel)]="user.rememberMe">
+        Remember login information
+      </label>
+
+      <button type="submit" class="action-button login-button" [disabled]="loginForm.invalid">
+        Login
+      </button>
+    </form>
+  }
+</section>

@@ -1,0 +1,49 @@
+<p>product-list-component works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>PRICE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products">
+            <td>{{product.id}}</td>    
+            <td>{{product.name}}</td>    
+            <td>{{product.price}}</td>    
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    way 2
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>PRICE</th>
+            <th>IMAGE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (product of products; track $index) 
+        {
+            <tr [class]="{'invalid_product':product.price<0}">
+                <td>{{product.id}}</td>    
+                <td>{{product.name}}</td>    
+                <td>{{product.price}}</td>   
+                <td>
+                    <img [src]="product.image_link" height="100" width="100"/>
+                </td> 
+            </tr>
+        }
+        @empty {
+            <tr>
+                <td colspan="4">Not found</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,25 @@
+<p>binding-two-way-component works!</p>
+<table border="1">
+    <tr>
+        <td>a:</td>
+        <td><input type="number" [value]="hsa" (input)="hsa = $any($event.target).valueAsNumber"></td>
+    </tr>
+    <tr>
+        <td>b:</td>
+        <td><input type="number" [value]="hsb" (input)="hsb = $any($event.target).valueAsNumber"></td>
+    </tr>
+    <tr>
+        <td>c:</td>
+        <td><input type="number" [value]="hsc" (input)="hsc = $any($event.target).valueAsNumber"></td>
+    </tr>
+    <tr>
+        <td>result:</td>
+        <td [innerHTML]="result"></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button (click)="giaiPTB2()">Giải</button>
+            <button>PT mới</button>
+        </td>
+    </tr>
+</table>

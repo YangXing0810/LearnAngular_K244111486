@@ -1,0 +1,5 @@
+.fe-wrap { background: #fff; border-radius: 10px; }
+.fe-wrap .ql-toolbar.ql-snow { border-radius: 10px 10px 0 0; border-color: #dee2e6; background: #f8f9fa; }
+.fe-wrap .ql-container.ql-snow { border-radius: 0 0 10px 10px; border-color: #dee2e6; font-size: 15px; }
+.fe-wrap .ql-editor { min-height: 260px; }
+.fe-wrap .ql-editor img { max-width: 100%; }

@@ -1,0 +1,15 @@
+.view-page { max-width: 1000px; margin: 24px auto; padding: 0 16px; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+.crumb { margin-bottom: 12px; color: #777; }
+.crumb a { text-decoration: none; color: #5b5486; font-weight: 600; }
+.crumb span { margin: 0 6px; }
+.view-card { background: #fff; border: 1px solid #e6e6ee; border-radius: 16px; padding: 28px; box-shadow: 0 6px 18px rgba(0,0,0,.05); }
+.top { display: flex; gap: 28px; align-items: flex-start; }
+.thumb { width: 260px; height: 260px; object-fit: cover; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,.18); }
+.info h2 { margin: 10px 0 14px; color: #1f1c2c; }
+.style-badge { background: #ece9ff; color: #5b5486; font-size: 13px; padding: 7px 12px; border-radius: 20px; }
+.meta td { padding: 4px 16px 4px 0; color: #555; }
+.meta td:first-child { color: #999; }
+.section { margin: 26px 0 8px; padding-top: 18px; border-top: 1px solid #eee; color: #5b5486; }
+.detail { padding: 0; font-size: 16px; line-height: 1.7; height: auto; }
+.detail img { max-width: 100%; border-radius: 10px; }
+@media (max-width: 800px) { .top { flex-direction: column; } }

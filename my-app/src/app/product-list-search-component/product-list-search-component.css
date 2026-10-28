@@ -1,0 +1,27 @@
+.search-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.search-header h2 {
+	margin: 0;
+}
+
+.logout-button {
+	min-height: 40px;
+	padding: 8px 16px;
+	border: 0;
+	border-radius: 5px;
+	background: #c62828;
+	color: #fff;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.logout-button:hover {
+	background: #a61f1f;
+}

@@ -1,0 +1,16 @@
+thead{
+    background-color: #fbff00;
+}
+table, tr, td, th{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+tbody tr:nth-child(even){
+    background-color: #caf9ff;
+}
+tbody tr:nth-child(odd){
+    background-color: #ff8c8c;
+}
+tbody tr:hover{
+    background-color: #d98cff;
+}

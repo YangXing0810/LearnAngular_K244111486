@@ -1,0 +1,14 @@
+<p>binding-class-component works!</p>
+<div [class.mau_do]="true" [class.nen_xanh]="true">
+  Welcome to K24411E
+</div>
+<button class="btn"
+        [class.btn-saved]="isSaved"
+        (click)="toggleSaveState()">
+  {{ isSaved ? 'Saved' : 'Re-Save' }}
+</button>
+<button [class]="{'btn': true, 'btn-active': isActive, 'btn-saved': isSaved}"
+        (click)="toggleSaveState()">
+  Re-Save
+</button>
+

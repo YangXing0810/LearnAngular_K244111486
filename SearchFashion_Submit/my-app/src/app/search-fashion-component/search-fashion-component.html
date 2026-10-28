@@ -1,0 +1,95 @@
+<div class="page">
+  <header class="hero">
+    <h2>Search Fashion</h2>
+    <p>Find fashion articles by similarity — Cosine or Jaccard</p>
+  </header>
+
+  <!-- ===== SEARCH PANEL ===== -->
+  <form class="panel" (ngSubmit)="search()">
+    <div class="search-row">
+      <input class="keyword" type="text" name="keyword" [(ngModel)]="keyword"
+        placeholder="Enter keywords, e.g. street style paris" autocomplete="off">
+      <button type="submit" class="search-btn" [disabled]="loading()">
+        {{ loading() ? 'Searching...' : 'Search' }}
+      </button>
+    </div>
+
+    <div class="options">
+      <div class="group">
+        <span class="opt-label">Search by</span>
+        <label class="chip" [class.active]="field==='fashion_subject'">
+          <input type="radio" name="field" value="fashion_subject" [(ngModel)]="field"> Subject
+        </label>
+        <label class="chip" [class.active]="field==='fashion_detail'">
+          <input type="radio" name="field" value="fashion_detail" [(ngModel)]="field"> Detail
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="opt-label">Metric</span>
+        <label class="chip" [class.active]="metric==='cosine'">
+          <input type="radio" name="metric" value="cosine" [(ngModel)]="metric"> Cosine
+        </label>
+        <label class="chip" [class.active]="metric==='jaccard'">
+          <input type="radio" name="metric" value="jaccard" [(ngModel)]="metric"> Jaccard
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="opt-label">Top results</span>
+        <select name="top" [(ngModel)]="top">
+          @for (n of topOptions; track n) {
+            <option [ngValue]="n">{{ n }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="dot high"></span> 0.75 – 1
+      <span class="dot medium"></span> 0.5 – &lt;0.75
+      <span class="dot low"></span> &lt; 0.5
+    </div>
+  </form>
+
+  @if (errMessage()) {
+    <p class="error">{{ errMessage() }}</p>
+  }
+
+  <!-- ===== RESULT LIST ===== -->
+  @if (searched()) {
+    <p class="summary">
+      Found <b>{{ fashions().length }}</b> result(s) for "<b>{{ keyword }}</b>"
+      by {{ field }} · sorted by {{ metricLabel }} (descending)
+    </p>
+
+    <table class="result">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Id</th>
+          <th>Style</th>
+          <th>Fashion Subject</th>
+          <th>Fashion Detail</th>
+          <th>Image</th>
+          <th>{{ metricLabel }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (f of fashions(); track f._id; let i = $index) {
+          <tr [class]="getLevel(f.similarity)">
+            <td>{{ i + 1 }}</td>
+            <td class="id">{{ f._id }}</td>
+            <td><b>{{ f.style }}</b></td>
+            <td>{{ f.fashion_subject }}</td>
+            <td><div class="detail" [title]="f.fashion_detail">{{ f.fashion_detail }}</div></td>
+            <td><img [src]="getImage(f.fashion_image)" alt="fashion image"></td>
+            <td class="score">{{ f.similarity.toFixed(4) }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7" class="empty">No fashion matches your keywords.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

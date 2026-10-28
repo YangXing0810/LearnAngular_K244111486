@@ -1,0 +1,73 @@
+<div class="shop">
+  <!-- hero + search -->
+  <section class="hero">
+    <h1>FASHION <span>STYLE</span></h1>
+    <p>Discover the latest looks, trends and celebrity outfits</p>
+
+    <div class="search-box">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input class="form-control" list="clientStyles" placeholder="Enter a style, e.g. Street Style"
+               [ngModel]="styleText()" (ngModelChange)="styleText.set($event)"
+               (keyup.enter)="searchByStyle(styleText())">
+        <datalist id="clientStyles">
+          @for (s of styles(); track s) { <option [value]="s"></option> }
+        </datalist>
+        <select class="form-select style-select" [ngModel]="selectedStyle()" (ngModelChange)="searchByStyle($event)">
+          <option value="">-- All styles --</option>
+          @for (s of styles(); track s) { <option [value]="s">{{ s }}</option> }
+        </select>
+        <button class="btn btn-dark" (click)="searchByStyle(styleText())">Search</button>
+      </div>
+    </div>
+
+    <div class="chips">
+      <button class="chip" [class.active]="selectedStyle() === ''" (click)="loadAll()">All</button>
+      @for (s of styles(); track s) {
+        <button class="chip" [class.active]="selectedStyle().toLowerCase() === s.toLowerCase()" (click)="searchByStyle(s)">{{ s }}</button>
+      }
+    </div>
+  </section>
+
+  @if (errMessage()) { <div class="alert alert-danger">{{ errMessage() }}</div> }
+
+  @if (selectedStyle()) {
+    <p class="result-info">
+      Showing <b>{{ fashions().length }}</b> fashion(s) of style "<b>{{ selectedStyle() }}</b>"
+      <a href="javascript:void(0)" (click)="loadAll()">· Show all</a>
+    </p>
+  }
+
+  @if (loading()) {
+    <div class="text-center py-5 text-muted"><div class="spinner-border"></div></div>
+  } @else {
+    <!-- groups by Style -->
+    @for (g of groups(); track g.style) {
+      <section class="group">
+        <div class="group-head">
+          <h2>{{ g.style }}</h2>
+          <span>{{ g.items.length }} fashion(s)</span>
+        </div>
+        <div class="cards">
+          @for (f of g.items; track f._id) {
+            <a class="card-item" [routerLink]="['/client-fashion', f._id]">
+              <div class="img-wrap"><img [src]="f.fashion_image" [alt]="f.fashion_subject"></div>
+              <div class="body">
+                <div class="date">{{ f.created_date | date:'dd MMM yyyy' }}</div>
+                <h3>{{ f.fashion_subject }}</h3>
+                <p>{{ excerpt(f.fashion_detail) }}</p>
+                <span class="more">Read more <i class="bi bi-arrow-right"></i></span>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    } @empty {
+      <div class="empty">
+        <i class="bi bi-emoji-frown"></i>
+        <p>No fashion found for style "{{ selectedStyle() }}".</p>
+        <button class="btn btn-dark" (click)="loadAll()">Show all fashions</button>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,41 @@
+.validation-error {
+	display: grid;
+	gap: 2px;
+	margin-top: 4px;
+	color: #c62828;
+}
+
+.register-button,
+.default-values-button {
+	min-height: 40px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+	color: #fff;
+	font: inherit;
+	cursor: pointer;
+}
+
+.register-button {
+	background: #0d6efd;
+	border-color: #0d6efd;
+}
+
+.register-button:hover:not(:disabled) {
+	background: #0b5ed7;
+}
+
+.register-button:disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+
+.default-values-button {
+	background: #6c757d;
+	border-color: #6c757d;
+}
+
+.default-values-button:hover {
+	background: #596168;
+}

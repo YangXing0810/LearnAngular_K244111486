@@ -1,0 +1,21 @@
+<p>binding-event-component works!</p>
+<table border="1">
+    <tr>
+        <td>a:</td>
+        <td><input type="number" [value]="a" #hsa></td>
+    </tr>
+        <tr>
+        <td>b:</td>
+        <td><input type="number" [value]="b" #hsb></td>
+    </tr>
+    <tr>
+        <td>result:</td>
+        <td [innerHTML]="result"></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button (click)="doSolution(hsa.value, hsb.value)">Solution</button>
+            <button>Clear</button>
+        </td>
+    </tr>
+</table>
