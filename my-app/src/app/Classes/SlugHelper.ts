@@ -4,6 +4,7 @@
 export function createSlug(name: string, id: number): string {
   const sanitizedName = name
     .toLowerCase()
+    .replace(/đ/g, 'd') // Vietnamese letter đ has no accent to remove
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove Vietnamese accents
     .replace(/[^a-z0-9]+/g, '-') // Replace special characters with hyphens
     .replace(/(^-|-$)+/g, '');   // Trim hyphens from the start and end
@@ -33,4 +34,9 @@ export function getIdentityType(identity: string): 'ID' | 'SLUG_WITH_ID' | 'PURE
   }
   // 3. Otherwise, treat it as a pure text slug (e.g., "iphone-69-pro-max")
   return 'PURE_SLUG';
+}
+
+// Slug of a Fashion item: title + "-p" + IdF  (e.g. "street-style-look-p3")
+export function fashionSlug(f: { fashion_subject: string, IdF?: number, slug?: string }): string {
+  return f.slug || createSlug(f.fashion_subject, f.IdF ?? 0);
 }

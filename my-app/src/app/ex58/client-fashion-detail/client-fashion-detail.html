@@ -1,11 +1,43 @@
 <div class="article-page">
-  <a routerLink="/client-fashion" class="back"><i class="bi bi-arrow-left"></i> Back to fashions</a>
-  @if (errMessage()) { <div class="alert alert-danger">{{ errMessage() }}</div> }
+  <nav class="crumb">
+    <a routerLink="/client-fashion"><i class="bi bi-house"></i> Fashions</a>
+    @if (fashion(); as f) {
+      <i class="bi bi-chevron-right"></i>
+      <a routerLink="/client-fashion">{{ f.style }}</a>
+      <i class="bi bi-chevron-right"></i>
+      <span>#{{ f.IdF }}</span>
+    }
+  </nav>
+
+  @if (loading()) {
+    <div class="text-center py-5 text-muted"><div class="spinner-border"></div></div>
+  }
+
+  @if (errMessage()) {
+    <div class="not-found">
+      <i class="bi bi-search"></i>
+      <h4>{{ errMessage() }}</h4>
+      <a routerLink="/client-fashion" class="btn btn-dark mt-2"><i class="bi bi-arrow-left"></i> Back to fashions</a>
+    </div>
+  }
+
   @if (fashion(); as f) {
     <article>
-      <div class="style">{{ f.style }}</div>
-      <h1>{{ f.fashion_subject }}</h1>
-      <div class="date"><i class="bi bi-calendar3"></i> {{ f.created_date | date:'EEEE, dd MMMM yyyy' }}</div>
+      <header class="head">
+        <div class="badges">
+          <span class="style">{{ f.style }}</span>
+          <span class="idf">IdF #{{ f.IdF }}</span>
+        </div>
+        <h1>{{ f.fashion_subject }}</h1>
+        <div class="meta">
+          <span><i class="bi bi-calendar3"></i> {{ f.created_date | date:'EEEE, dd MMMM yyyy' }}</span>
+          <button class="slug-chip" (click)="copyLink()" title="Copy link">
+            <i class="bi" [class.bi-link-45deg]="!copied()" [class.bi-check2]="copied()"></i>
+            /client-fashion/{{ slugOf(f) }}
+          </button>
+        </div>
+      </header>
+
       <img [src]="f.fashion_image" class="cover" [alt]="f.fashion_subject">
       <!-- content entered with the WYSIWYG editor -->
       <div class="fashion-content content" [innerHTML]="f.fashion_detail | safeHtml"></div>
@@ -16,9 +48,9 @@
         <h4>More from {{ f.style }}</h4>
         <div class="rel-grid">
           @for (r of related(); track r._id) {
-            <a [routerLink]="['/client-fashion', r._id]" class="rel">
-              <img [src]="r.fashion_image" [alt]="r.fashion_subject">
-              <span>{{ r.fashion_subject }}</span>
+            <a [routerLink]="['/client-fashion', slugOf(r)]" class="rel">
+              <div class="rel-img"><img [src]="r.fashion_image" [alt]="r.fashion_subject"><span>#{{ r.IdF }}</span></div>
+              <span class="rel-title">{{ r.fashion_subject }}</span>
             </a>
           }
         </div>

@@ -29,10 +29,43 @@ client.connect();
 database = client.db("FashionData");
 fashionCollection = database.collection("Fashion");
 
+// ================== IdF: unique numeric id + Slug ==================
+// Create a slug from the title: "Street Style Đẹp" + IdF 3 -> "street-style-dep-p3"
+function slugify(text) {
+  return (text || "").toLowerCase()
+    .replace(/đ/g, "d")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")   // remove Vietnamese accents
+    .replace(/[^a-z0-9]+/g, "-")                          // special chars -> "-"
+    .replace(/(^-|-$)+/g, "")
+}
+function createSlug(f) { return `${slugify(f.fashion_subject)}-p${f.IdF}` }
+// add the "slug" field to every Fashion sent to the client
+function withSlug(f) { return f ? { ...f, slug: createSlug(f) } : f }
+
+// next IdF = current max IdF + 1
+async function nextIdF() {
+  const last = await fashionCollection.find({ IdF: { $exists: true } }).sort({ IdF: -1 }).limit(1).toArray()
+  return last.length ? last[0].IdF + 1 : 1
+}
+
+// When the server starts: give an IdF to old documents that do not have one
+// (numbered by creation date), then create a UNIQUE index on IdF
+async function ensureIdF() {
+  let id = await nextIdF()
+  const missing = await fashionCollection.find({ IdF: { $exists: false } }).sort({ created_date: 1 }).toArray()
+  for (const f of missing) {
+    await fashionCollection.updateOne({ _id: f._id }, { $set: { IdF: id++ } })
+  }
+  await fashionCollection.createIndex({ IdF: 1 }, { unique: true })
+  console.log(`IdF ready (${missing.length} document(s) numbered)`)
+}
+ensureIdF().catch(err => console.log("ensureIdF error:", err.message))
+// ====================================================================
+
 // [Exercise 58] API returns the entire Fashion, sorted by creation date descending
 app.get("/fashions", cors(), async (req, res) => {
   const result = await fashionCollection.find({}).sort({ created_date: -1 }).toArray();
-  res.send(result)
+  res.send(result.map(withSlug))
 })
 
 // [Exercise 58] API returns the list of Styles (for dropdown list)
@@ -48,7 +81,7 @@ app.get("/fashions/style/:style", cors(), async (req, res) => {
   const result = await fashionCollection
     .find({ style: { $regex: "^" + escaped + "$", $options: "i" } })
     .sort({ created_date: -1 }).toArray();
-  res.send(result)
+  res.send(result.map(withSlug))
 })
 
 // ================== SEARCH FASHION: Cosine / Jaccard Similarity ==================
@@ -97,7 +130,7 @@ app.get("/fashions/search", cors(), async (req, res) => {
       const similarity = metric === "jaccard"
         ? jaccardSimilarity(queryTokens, docTokens)
         : cosineSimilarity(queryTokens, docTokens)
-      return { ...f, similarity: Math.round(similarity * 10000) / 10000 }
+      return { ...withSlug(f), similarity: Math.round(similarity * 10000) / 10000 }
     })
     .filter(f => f.similarity > 0)
     .sort((a, b) => b.similarity - a.similarity)
@@ -106,21 +139,50 @@ app.get("/fashions/search", cors(), async (req, res) => {
 })
 // ================================================================================
 
+// [Slug] GET /fashions/slug/street-style-p3 -> automatically resolve the Fashion
+// 1. slug ends with "-p<IdF>"  -> find by IdF (title may have changed, still found)
+// 2. pure number "3"            -> find by IdF
+// 3. pure text slug             -> compare with the slug of each title
+app.get("/fashions/slug/:slug", cors(), async (req, res) => {
+  const slug = (req.params["slug"] || "").toLowerCase()
+  let fashion = null
+  const m = slug.match(/-p(\d+)$/) || slug.match(/^(\d+)$/)
+  if (m) {
+    fashion = await fashionCollection.findOne({ IdF: parseInt(m[1]) })
+  } else {
+    const all = await fashionCollection.find({}).toArray()
+    fashion = all.find(f => slugify(f.fashion_subject) === slug) || null
+  }
+  if (!fashion) return res.status(404).send({ message: "Fashion not found" })
+  res.send(withSlug(fashion))
+})
+
+// GET /fashions/idf/3 -> find by the numeric IdF
+app.get("/fashions/idf/:idf", cors(), async (req, res) => {
+  const fashion = await fashionCollection.findOne({ IdF: parseInt(req.params["idf"]) })
+  if (!fashion) return res.status(404).send({ message: "Fashion not found" })
+  res.send(withSlug(fashion))
+})
+
 app.get("/fashions/:id",cors(),async (req,res)=>{
+    if (!ObjectId.isValid(req.params["id"])) return res.status(404).send({ message: "Fashion not found" })
     var o_id = new ObjectId(req.params["id"]);
     const result = await fashionCollection.find({_id:o_id}).toArray();
-    res.send(result[0])
+    res.send(withSlug(result[0]))
     }
 )
 
 app.post("/fashions",cors(),async(req,res)=>{
 //MongoDB generates _id automatically, creation date = now
 delete req.body._id
+delete req.body.slug
 req.body.created_date = new Date()
+//IdF = unique number, auto increment
+req.body.IdF = await nextIdF()
 //put json Fashion into database
 await fashionCollection.insertOne(req.body)
 //send message to client(send all database to client)
-res.send(req.body)
+res.send(withSlug(req.body))
 })
 
 app.put("/fashions", cors(), async (req, res) => {
@@ -140,7 +202,7 @@ app.put("/fashions", cors(), async (req, res) => {
   //send Fahsion after updating
   var o_id = new ObjectId(req.body._id);
   const result = await fashionCollection.find({ _id: o_id }).toArray();
-  res.send(result[0]);
+  res.send(withSlug(result[0]));
 });
 
 app.delete("/fashions/:id", cors(), async (req, res) => {

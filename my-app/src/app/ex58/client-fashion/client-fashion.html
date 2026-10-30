@@ -21,6 +21,20 @@
       </div>
     </div>
 
+    <!-- [Slug] choose a slug -> detail page opens automatically -->
+    <div class="slug-box">
+      <div class="input-group input-group-sm">
+        <span class="input-group-text"><i class="bi bi-link-45deg"></i> /client-fashion/</span>
+        <input class="form-control" list="clientSlugs" placeholder="choose or type a slug, e.g. street-style-p3"
+               [ngModel]="slugText()" (ngModelChange)="slugText.set($event)"
+               (keyup.enter)="goToSlug(slugText())">
+        <datalist id="clientSlugs">
+          @for (f of allFashions(); track f._id) { <option [value]="slugOf(f)">#{{ f.IdF }} · {{ f.fashion_subject }}</option> }
+        </datalist>
+        <button class="btn btn-light" (click)="goToSlug(slugText())">Open <i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+
     <div class="chips">
       <button class="chip" [class.active]="selectedStyle() === ''" (click)="loadAll()">All</button>
       @for (s of styles(); track s) {
@@ -50,13 +64,20 @@
         </div>
         <div class="cards">
           @for (f of g.items; track f._id) {
-            <a class="card-item" [routerLink]="['/client-fashion', f._id]">
-              <div class="img-wrap"><img [src]="f.fashion_image" [alt]="f.fashion_subject"></div>
+            <a class="card-item" [routerLink]="['/client-fashion', slugOf(f)]">
+              <div class="img-wrap">
+                <img [src]="f.fashion_image" [alt]="f.fashion_subject">
+                <span class="idf">#{{ f.IdF }}</span>
+                <span class="tag">{{ f.style }}</span>
+              </div>
               <div class="body">
                 <div class="date">{{ f.created_date | date:'dd MMM yyyy' }}</div>
                 <h3>{{ f.fashion_subject }}</h3>
                 <p>{{ excerpt(f.fashion_detail) }}</p>
-                <span class="more">Read more <i class="bi bi-arrow-right"></i></span>
+                <div class="foot">
+                  <code class="slug" [title]="slugOf(f)">/{{ slugOf(f) }}</code>
+                  <span class="more">Read <i class="bi bi-arrow-right"></i></span>
+                </div>
               </div>
             </a>
           }

@@ -89,7 +89,7 @@ const routes: Routes = [
   {path:"admin-fashion/view/:id", component:AdminFashionViewComponent},
   // ===== Exercise 58: Client module =====
   {path:"client-fashion", component:ClientFashionComponent},
-  {path:"client-fashion/:id", component:ClientFashionDetailComponent},
+  {path:"client-fashion/:slug", component:ClientFashionDetailComponent}, // e.g. /client-fashion/street-style-look-p3
 
   {path:'**',component:PageNotFoundComponent},
 ];

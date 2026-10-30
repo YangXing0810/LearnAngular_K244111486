@@ -1,10 +1,18 @@
+import { createSlug } from './SlugHelper';
+
 export class Fashion {
   constructor(
     public _id: any = null,
+    public IdF: number = 0,
     public style: string = "",
     public fashion_subject: string = "",
     public fashion_detail: string = "",
     public fashion_image: string = "") {}
+
+  // slug of this Fashion, e.g. "street-style-look-p3"
+  getSlug(): string {
+    return createSlug(this.fashion_subject, this.IdF);
+  }
 
   getBase64String()
     {

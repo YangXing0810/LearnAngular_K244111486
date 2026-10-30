@@ -1,6 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
 import { FashionStoreService } from '../../services/fashion-store-service';
+import { Router } from '@angular/router';
 import { FashionItem } from '../../Classes/FashionItem';
+import { fashionSlug } from '../../Classes/SlugHelper';
 
 // Client: show Fashions grouped by Style + search by Style
 @Component({
@@ -16,6 +18,8 @@ export class ClientFashionComponent {
   selectedStyle = signal('')    // style currently filtered ('' = all)
   loading = signal(true)
   errMessage = signal('')
+  allFashions = signal<FashionItem[]>([])  // used by the "Go to slug" box
+  slugText = signal('')                    // slug selected / typed by user
 
   // group Fashions by Style
   groups = computed(() => {
@@ -27,7 +31,7 @@ export class ClientFashionComponent {
     return Array.from(map, ([style, items]) => ({ style, items }))
   })
 
-  constructor(private _service: FashionStoreService) {
+  constructor(private _service: FashionStoreService, private router: Router) {
     this._service.getStyles().subscribe({ next: (s) => this.styles.set(s) })
     this.loadAll()
   }
@@ -37,7 +41,7 @@ export class ClientFashionComponent {
     this.selectedStyle.set('')
     this.styleText.set('')
     this._service.getFashions().subscribe({
-      next: (data) => { this.fashions.set(data); this.loading.set(false) },
+      next: (data) => { this.fashions.set(data); this.allFashions.set(data); this.loading.set(false) },
       error: (err) => { this.errMessage.set(err.message); this.loading.set(false) }
     })
   }
@@ -53,6 +57,19 @@ export class ClientFashionComponent {
       next: (data) => { this.fashions.set(data); this.loading.set(false) },
       error: (err) => { this.errMessage.set(err.message); this.loading.set(false) }
     })
+  }
+
+  // slug of one Fashion (used in [routerLink])
+  slugOf(f: FashionItem): string {
+    return fashionSlug(f)
+  }
+
+  // [Slug] user selects / types a slug -> open the detail page,
+  // the detail page resolves the slug automatically
+  goToSlug(slug: string) {
+    slug = (slug || '').trim()
+    if (!slug) return
+    this.router.navigate(['/client-fashion', slug])
   }
 
   // short text from the HTML detail

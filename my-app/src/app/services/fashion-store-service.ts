@@ -26,6 +26,14 @@ export class FashionStoreService {
   getFashion(id: string): Observable<FashionItem> {
     return this._http.get<FashionItem>("/fashions/" + id).pipe(catchError(this.handleError))
   }
+  // [Slug] resolve a slug ("street-style-p3", "3" or "street-style") to one Fashion
+  getFashionBySlug(slug: string): Observable<FashionItem> {
+    return this._http.get<FashionItem>("/fashions/slug/" + encodeURIComponent(slug)).pipe(catchError(this.handleError))
+  }
+  // one Fashion by the numeric IdF
+  getFashionByIdF(idf: number): Observable<FashionItem> {
+    return this._http.get<FashionItem>("/fashions/idf/" + idf).pipe(catchError(this.handleError))
+  }
   // add new Fashion
   postFashion(f: FashionItem): Observable<FashionItem> {
     return this._http.post<FashionItem>("/fashions", f).pipe(catchError(this.handleError))
