@@ -1,26 +1,43 @@
-<p>{{errMessage()}}</p>
-Fashion Id: <input type="text" #fashionId>
-<button (click)="searchFashion(fashionId.value)">Search</button>
-<table>
-  @if (fashion()!=null){
-    <tr>
-      <td>Fashion Id:</td>
-      <td>{{fashion()?. _id}}</td>
-    </tr>
-    <tr>
-      <td>Fashion Subject:</td>
-      <td>{{fashion()?.fashion_subject}}</td>
-    </tr>
-    <tr>
-      <td>Fashion Detail:</td>
-      <td>{{fashion()?.fashion_detail}} </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <img src="{{fashion()?.getBase64String()}}">
-      </td>
-    </tr>
-  }@else {
-    <tr><td>Not found Fashion</td></tr>
+<div class="fd-page">
+  <div class="fd-search">
+    <a routerLink="/fashion-list" class="fd-back"><i class="bi bi-grid"></i> All fashions</a>
+    <div class="input-group">
+      <select class="form-select fd-select" #slugSelect (change)="searchFashion(slugSelect.value)">
+        <option value="">— Select a Fashion slug —</option>
+        @for (f of fashions(); track f._id) {
+          <option [value]="f.getSlug()" [selected]="fashion()?.IdF === f.IdF">#{{ f.IdF }} · {{ f.getSlug() }}</option>
+        }
+      </select>
+      <input type="text" class="form-control" #fashionId placeholder="or type IdF / slug / _id"
+             (keyup.enter)="searchFashion(fashionId.value)">
+      <button class="btn btn-dark" (click)="searchFashion(fashionId.value)"><i class="bi bi-search"></i> Search</button>
+    </div>
+  </div>
+
+  @if (loading()) { <div class="text-center py-5 text-muted"><div class="spinner-border"></div></div> }
+  @if (errMessage()) {
+    <div class="fd-empty"><i class="bi bi-emoji-frown"></i><p>{{ errMessage() }}</p></div>
   }
-</table>
+
+  @if (fashion(); as f) {
+    <div class="fd-card">
+      <img [src]="f.getBase64String()" class="fd-cover" [alt]="f.fashion_subject">
+      <div class="fd-info">
+        <div class="fd-badges">
+          <span class="fd-style">{{ f.style }}</span>
+          <span class="fd-idf">IdF #{{ f.IdF }}</span>
+        </div>
+        <h1>{{ f.fashion_subject }}</h1>
+        <table class="fd-meta">
+          <tr><td>IdF</td><td><b>{{ f.IdF }}</b></td></tr>
+          <tr><td>Slug</td><td><code>{{ f.getSlug() }}</code></td></tr>
+          <tr><td>_id</td><td><code>{{ f._id }}</code></td></tr>
+          @if (f.created_date) { <tr><td>Created</td><td>{{ f.created_date | date:'dd/MM/yyyy HH:mm' }}</td></tr> }
+        </table>
+      </div>
+    </div>
+    <div class="fd-content fashion-content" [innerHTML]="f.fashion_detail | safeHtml"></div>
+  } @else if (!loading() && !errMessage()) {
+    <div class="fd-empty"><i class="bi bi-hand-index"></i><p>Select a slug above to view its Fashion.</p></div>
+  }
+</div>

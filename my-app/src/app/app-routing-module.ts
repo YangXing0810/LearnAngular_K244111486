@@ -77,6 +77,7 @@ const routes: Routes = [
   {path:"book-delete", component:BookDeleteComponent},
   {path:"fashion-list", component:FashionComponent},
   {path:"fashion-detail", component:FashionDetailComponent},
+  {path:"fashion-detail/:slug", component:FashionDetailComponent}, // e.g. /fashion-detail/men-skirts-p5
   {path:"fashion-new",component:FashionNewComponent},
   {path:"search-fashion", component:SearchFashionComponent},
   {path:"fashion-update", component:FashionUpdateComponent},

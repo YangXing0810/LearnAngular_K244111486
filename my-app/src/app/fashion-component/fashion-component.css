@@ -1,0 +1,17 @@
+.fl-page { max-width: 1200px; margin: 24px auto 50px; padding: 0 16px; font-family: 'Segoe UI', Roboto, Arial, sans-serif; color: #222; }
+.fl-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; padding: 26px 28px; border-radius: 16px; color: #fff; background: linear-gradient(120deg, #1f1c2c, #4b134f 60%, #c94b4b); margin-bottom: 26px; }
+.fl-head h2 { margin: 0; font-weight: 800; letter-spacing: 1px; }
+.fl-head p { margin: 4px 0 0; opacity: .8; }
+.fl-search { max-width: 380px; }
+.fl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+.fl-card { display: flex; flex-direction: column; background: #fff; border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 4px 14px rgba(0,0,0,.08); transition: transform .2s, box-shadow .2s; }
+.fl-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(75,19,79,.18); }
+.fl-img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #eee; }
+.fl-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.fl-card:hover .fl-img img { transform: scale(1.06); }
+.fl-idf { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,.72); color: #fff; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.fl-body { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }
+.fl-style { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #c94b4b; }
+.fl-body h3 { font-size: 17px; font-weight: 700; margin: 6px 0 8px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.fl-body p { font-size: 14px; color: #666; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.fl-slug { font-size: 11px; color: #4b134f; background: #f6f0f8; padding: 3px 8px; border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

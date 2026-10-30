@@ -30,6 +30,13 @@ export class FashionAPIService {
     retry(3),
     catchError(this.handleError))
 }
+  // [Slug] resolve "title-p3", "3", "title" (or an _id) to one Fashion
+  getFashionBySlug(slug: string): Observable<any> {
+    const url = /^[a-f0-9]{24}$/i.test(slug) ? "/fashions/" + slug : "/fashions/slug/" + encodeURIComponent(slug)
+    return this._http.get<any>(url, this.requestOptions).pipe(
+      map(res => JSON.parse(res) as Fashion),
+      catchError(this.handleError))
+  }
   searchFashions(q: string, field: string, metric: string, top: number): Observable<any> {
     const url = "/fashions/search?q=" + encodeURIComponent(q) + "&field=" + field +
       "&metric=" + metric + "&top=" + top

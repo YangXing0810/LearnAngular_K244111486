@@ -1,22 +1,35 @@
-{{errMessage()}}
-<table border="1">
-  <tr>
-    <td>Id</td>
-    <td>Fashion Subject</td>
-    <td>Fashion Detail</td>
-    <td>Image</td>
-  </tr>
-  <tbody>
-    @for (fashion of fashions(); track fashion._id)
-    {
-      <tr>
-        <td>{{fashion._id}}</td>
-        <td>{{fashion.fashion_subject}}</td>
-        <td>{{fashion.fashion_detail}}</td>
-        <td>
-          <img src="{{fashion.fashion_image}}" width="100px" height="100px">
-        </td>
-      </tr>
+<div class="fl-page">
+  <header class="fl-head">
+    <div>
+      <h2>Fashion Collection</h2>
+      <p>{{ fashions().length }} items · click a card to open its slug page</p>
+    </div>
+    <div class="input-group fl-search">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input class="form-control" placeholder="Filter by #IdF, title, style or slug..."
+             [ngModel]="keyword()" (ngModelChange)="keyword.set($event)">
+    </div>
+  </header>
+
+  @if (errMessage()) { <div class="alert alert-danger">{{ errMessage() }}</div> }
+  @if (loading()) { <div class="text-center py-5 text-muted"><div class="spinner-border"></div></div> }
+
+  <div class="fl-grid">
+    @for (f of filtered(); track f._id) {
+      <a class="fl-card" [routerLink]="['/fashion-detail', f.getSlug()]">
+        <div class="fl-img">
+          <img [src]="f.getBase64String()" [alt]="f.fashion_subject">
+          <span class="fl-idf">IdF #{{ f.IdF }}</span>
+        </div>
+        <div class="fl-body">
+          <span class="fl-style">{{ f.style }}</span>
+          <h3>{{ f.fashion_subject }}</h3>
+          <p>{{ excerpt(f.fashion_detail) }}</p>
+          <code class="fl-slug">/{{ f.getSlug() }}</code>
+        </div>
+      </a>
+    } @empty {
+      @if (!loading()) { <p class="text-center text-muted py-5">No fashion found.</p> }
     }
-  </tbody>
-</table>
+  </div>
+</div>
