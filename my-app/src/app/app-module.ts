@@ -42,6 +42,7 @@ import { AdminFashionViewComponent } from './ex58/admin-fashion-view/admin-fashi
 import { ClientFashionComponent } from './ex58/client-fashion/client-fashion';
 import { ClientFashionDetailComponent } from './ex58/client-fashion-detail/client-fashion-detail';
 import { SafeHtmlPipe } from './ex58/safe-html-pipe';
+import { LoginAuthComponent } from './login-auth-component/login-auth-component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { SafeHtmlPipe } from './ex58/safe-html-pipe';
     ClientFashionComponent,
     ClientFashionDetailComponent,
     SafeHtmlPipe,
+    LoginAuthComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(withInterceptorsFromDi())],

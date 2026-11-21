@@ -35,6 +35,7 @@ import { AdminFashionFormComponent } from './ex58/admin-fashion-form/admin-fashi
 import { AdminFashionViewComponent } from './ex58/admin-fashion-view/admin-fashion-view';
 import { ClientFashionComponent } from './ex58/client-fashion/client-fashion';
 import { ClientFashionDetailComponent } from './ex58/client-fashion-detail/client-fashion-detail';
+import { LoginAuthComponent } from './login-auth-component/login-auth-component';
 
 const routes: Routes = [
   { path: 'binding-property',component:BindingPropertyComponent },
@@ -81,6 +82,7 @@ const routes: Routes = [
   {path:"search-fashion", component:SearchFashionComponent},
   {path:"fashion-update", component:FashionUpdateComponent},
   {path:"fashion-delete", component:FashionDeleteComponent},
+  {path:"login-auth", component:LoginAuthComponent},
 
   // ===== Exercise 58: Admin module =====
   {path:"admin-fashion", component:AdminFashionListComponent},

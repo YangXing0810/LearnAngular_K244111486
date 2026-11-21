@@ -21,6 +21,7 @@
     "bootstrap-icons": "^1.13.2",
     "install": "^0.13.0",
     "jquery": "^4.0.0",
+    "ngx-cookie-service": "^22.0.0",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
